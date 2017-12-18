@@ -7,31 +7,20 @@
 
 import UIKit
 
-class InfoUserController: UIViewController {
+class InfoUserController: UIViewController,UITableViewDataSource,UITableViewDelegate {
     
-    @IBOutlet weak var imgUser: UIImageView!;
-    @IBOutlet weak var scVwDatosUser: UIScrollView!;
-    
-    @IBOutlet weak var txFlEmailUser: UITextField!;
-    @IBOutlet weak var txFlNameUser: UITextField!;
-    @IBOutlet weak var txFlPApellidoUser: UITextField!;
-    @IBOutlet weak var txFlSApellidoUser: UITextField!;
-    @IBOutlet weak var txFlEstadoUser: UITextField!;
-    @IBOutlet weak var txFlTelUser: UITextField!;
-    @IBOutlet weak var txFlFacebookUser: UITextField!;
-    @IBOutlet weak var txFlGoogleUser: UITextField!;
-    @IBOutlet weak var txFlFechaNacUser: UITextField!;
-    @IBOutlet weak var txFlDirUser: UITextField!;
-    @IBOutlet weak var txFlRFCUser: UITextField!;
-    
-    @IBOutlet weak var btGuardar: UIButton!
-    private let fltBtn:UIButton! = UIButton();
+    @IBOutlet weak var tableInfoUser: UITableView!
     
     private var user_id : String!;
     private var cuentaBtn: UIButton!;
     private var tapGesture: UITapGestureRecognizer!;
     private var menuContainer: UIView!;
     
+    public var data:[InfoCells]?;
+    
+    public var imgUser:UIImage!;
+    public var imgBack:UIImage!;
+    public var cargado:Bool = false;
     
     
     
@@ -39,7 +28,7 @@ class InfoUserController: UIViewController {
         super.viewDidLoad()
         
         self.hideKeyboard();
-        
+        data = [];
         self.navigationController?.isNavigationBarHidden = false;
         
         //Se obtiene de las subviews el Boton de información de usuario
@@ -54,41 +43,19 @@ class InfoUserController: UIViewController {
         
         user_id = UserDefaults.standard.string(forKey: "userId")!;
         
-        scVwDatosUser.isScrollEnabled = true;
-        scVwDatosUser.contentSize =    CGSize(width: scVwDatosUser.contentSize.width,height: (txFlDirUser.frame.height+10)*13);
+        tableInfoUser.register(UINib(nibName: "UserInfoCell", bundle: nil), forCellReuseIdentifier: UserInfoCell.KEY);
         
-        txFlEmailUser.placeholder = "Email" ;
-        txFlEmailUser.keyboardType = UIKeyboardType.emailAddress;
-        txFlEmailUser.isEnabled = false;
-        txFlEmailUser.tag = 5;
         
-        txFlNameUser.placeholder = "Nombre (s)";
+        data?.append(UserInfoCellContent());
+        data?.append(DatosPrincipalesCellContent());
+        data?.append(DatosPersonalesCellContent());
+        data?.append(CuentasAsociadasCellContent());
+        data?.append(RowButtonsCellContent(imgBtn: UIImage.fontAwesomeIcon(name: .edit, textColor: UIColor.black, size: CGSize(width: 500, height: 500))));
         
-        txFlPApellidoUser.placeholder = "Apellido Paterno";
-        txFlSApellidoUser.placeholder = "Apellido Materno";
-        txFlEstadoUser.placeholder = "Estado";
+        tableInfoUser.dataSource = self;
+        tableInfoUser.delegate = self;
+        tableInfoUser.translatesAutoresizingMaskIntoConstraints = true;
         
-        txFlTelUser.placeholder = "Teléfono";
-        txFlTelUser.keyboardType = UIKeyboardType.emailAddress;
-        
-        txFlFacebookUser.placeholder = "Dirección de Facebook";
-        txFlFacebookUser.keyboardType = UIKeyboardType.emailAddress;
-        
-        txFlGoogleUser.placeholder = "Correo Google";
-        txFlGoogleUser.keyboardType = UIKeyboardType.emailAddress;
-        
-        txFlFechaNacUser.placeholder = "Fecha de Nacimiento";
-        txFlDirUser.placeholder = "Dirección";
-        txFlRFCUser.placeholder = "RFC";
-        
-        btGuardar.isHidden = true;
-        
-        disable_EnableAllSub(principal: scVwDatosUser)
-        
-        btnFlotante();
-        obtInfoUser();
-        
-        print(scVwDatosUser.contentSize.height);
         
     }
     
@@ -97,34 +64,114 @@ class InfoUserController: UIViewController {
         
     }
     
-    @IBAction func actionGuardar(_ sender: Any) {
-        if(Utilities.isValidEmail(testStr: txFlEmailUser.text!)){
-            self.setInfoUser();
-            self.disable_EnableAllSub(principal: scVwDatosUser);
-            btGuardar.isHidden = true;
-            fltBtn.isHidden = false;
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return (self.data?.count)!;
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let tipo = data![indexPath.row];
+        if(indexPath.row>=(data?.count)!){
+            obtInfoUser();
+        }
+        return getCell(tipo: tipo, indexPath: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch data![indexPath.row] {
+        case is UserInfoCellContent:
+            return 180;
+        case is DatosPrincipalesCellContent:
+            return 155;
+        case is DatosPersonalesCellContent:
+            return 320;
+        case is CuentasAsociadasCellContent:
+            return 142;
+        case is RowButtonsCellContent:
+            return 62;
+        default:
+            return 100;
+        }
+    }
+    
+    private func getCell(tipo:InfoCells!,indexPath:IndexPath)->UITableViewCell{
+        switch tipo.idTipo{
+        case UserInfoCell.KEY:
+            let item = tableInfoUser.dequeueReusableCell(withIdentifier: UserInfoCell.KEY) as! UserInfoCell;
+            if(!cargado){
+            let imgUs = UIImage.fontAwesomeIcon(name: .userO, textColor: UIColor.black, size: CGSize(width: 100, height: 100 ));
+            var imgBack = Utilities.escalar(img: imgUs, nwAncho: item.imgUser.frame.size, sizeOriginal: CGRect(x: 0, y: 0, width: item.imgBackground.bounds.width, height: item.imgBackground.bounds.height));
+            imgBack = Utilities.blur(img: imgBack, blurVal: 80);
+            
+            (data![indexPath.row] as! UserInfoCellContent).imgUser = imgUs;
+            (data![indexPath.row] as! UserInfoCellContent).imgBackground = imgBack;
+            item.set(datos:(data![indexPath.row] as! UserInfoCellContent));
+                cargado = true;
+            }else{
+                item.set(datos: (data![indexPath.row]) as! UserInfoCellContent);
+            }
+            data![indexPath.row].setController(controller: item);
+            
+            return item;
+        case DatosPrincipalesCellController.KEY:
+            let item = tableInfoUser.dequeueReusableCell(withIdentifier: DatosPrincipalesCellController.KEY) as! DatosPrincipalesCellController;
+            data![indexPath.row].setController(controller: item);
+            return item;
+        case DatosPersonalesCellController.KEY:
+            let item = tableInfoUser.dequeueReusableCell(withIdentifier: DatosPersonalesCellController.KEY) as! DatosPersonalesCellController;
+            data![indexPath.row].setController(controller: item);
+            return item;
+        case CuentasAsociadasCellController.KEY:
+            let item = tableInfoUser.dequeueReusableCell(withIdentifier: CuentasAsociadasCellController.KEY) as!
+            CuentasAsociadasCellController;
+            data![indexPath.row].setController(controller: item);
+            return item;
+        case RowButtonsCellController.KEY:
+            let item = tableInfoUser.dequeueReusableCell(withIdentifier: RowButtonsCellController.KEY) as! RowButtonsCellController;
+            data![indexPath.row].setController(controller: item);
+            return item;
+        default:
+            return TableViewCell(style: .default, reuseIdentifier: nil);
+        }
+    }
+    
+    func actionGuardar() {
+        
+        let principal = (data![1] as! DatosPrincipalesCellContent).controller as! DatosPrincipalesCellController;
+        let personales = (data![2] as! DatosPersonalesCellContent).controller as! DatosPersonalesCellController;
+        let cuentas = (data![3] as! CuentasAsociadasCellContent).controller as! CuentasAsociadasCellController;
+        
+        
+        if(Utilities.isValidEmail(testStr: cuentas.txFlGmail.text!)){
+            self.setInfoUser(principal: principal, personales: personales, cuentas: cuentas);
+        }
+    }
+    
+    private func disEn_txFl(){
+        for item in self.data!{
+            var control = item.controller;
         }
     }
     
     //Actualiza la información de usuario
-    private func setInfoUser(){
+    private func setInfoUser(principal:DatosPrincipalesCellController, personales:DatosPersonalesCellController, cuentas: CuentasAsociadasCellController){
         
         let url = "http://18.221.106.92/api/public/user";
         guard let urlUpdate = URL(string:url)else{print("ERROR UPDATE");return};
         
         let parameters: [String:Any?] = [
             "user_id" :  user_id,
-            "email" : txFlEmailUser.text,
-            "name" : txFlNameUser.text,
-            "apellidoPaterno" : txFlPApellidoUser.text,
-            "apellidoMaterno" : txFlSApellidoUser.text,
-            "estado" : txFlEstadoUser.text,
-            "tel" : txFlTelUser.text,
-            "facebook" : txFlFacebookUser.text,
-            "google" : txFlGoogleUser.text,
-            "fecha_nacimiento" : txFlFechaNacUser.text,
-            "direccion" : txFlDirUser.text,
-            "rfc" : txFlRFCUser.text
+            "email" : principal.txFlNomUsuario.text,
+            "name" : personales.txFlNombre.text,
+            "apellidoPaterno" : personales.txFlPApellido.text,
+            "apellidoMaterno" : personales.txFlSApellido.text,
+            "estado" : principal.txFlResidencia.text,
+            "tel" : personales.txFlTelefono.text,
+            "facebook" : cuentas.txFlFacebook.text,
+            "google" : cuentas.txFlGmail.text,
+            "fecha_nacimiento" : personales.tcFlNacimiento.text,
+            "direccion" : personales.txFlDireccion.text,
+            "rfc" : personales.txFlRFC.text
         ];
         
         var request = URLRequest(url: urlUpdate);
@@ -165,28 +212,6 @@ class InfoUserController: UIViewController {
         
     }
     
-    //Crea el botón flotante
-    private func btnFlotante(){
-        
-        
-        let subScreen = scVwDatosUser.bounds;
-        print(subScreen.width);
-        print(subScreen.height);
-        fltBtn.frame = CGRect(x: subScreen.width - 45, y: subScreen.height - 45, width: 38, height: 38);
-        fltBtn.setBackgroundImage(UIImage(named: "pencil.png"), for: .normal);
-        fltBtn.contentMode = .scaleToFill;
-        fltBtn.backgroundColor = UIColor.white;
-        fltBtn.clipsToBounds = true;
-        fltBtn.layer.cornerRadius = 15;
-        fltBtn.layer.shadowRadius = 1.2;
-        fltBtn.layer.shadowOffset = CGSize(width: 0.8, height: 0.8);
-        fltBtn.layer.shadowOpacity = 0.5;
-        
-        fltBtn.addTarget(self, action: #selector(InfoUserController.EnableEdit), for: .touchUpInside);
-        
-        scVwDatosUser.addSubview(fltBtn);
-    }
-    
     //Crear menu contextual
     private func iniMenu(){
         
@@ -224,6 +249,10 @@ class InfoUserController: UIViewController {
     private func obtInfoUser(){
         print(UserDefaults.standard.integer(forKey: "userId"));
         
+        let principal = (data![1] as! DatosPrincipalesCellContent).controller as! DatosPrincipalesCellController;
+        let personales = (data![2] as! DatosPersonalesCellContent).controller as! DatosPersonalesCellController;
+        let cuentas = (data![3] as! CuentasAsociadasCellContent).controller as! CuentasAsociadasCellController;
+        
         let url = "http://18.221.106.92/api/public/user/" + (user_id);
         guard let urlInfo = URL(string: url) else{ print("ERROR en URL"); return};
         
@@ -241,7 +270,7 @@ class InfoUserController: UIViewController {
                         
                         //let dataImg: NSData? = Utilities.traerImagen(urlImagen: Utilities.sinFoto);
                         
-                        self.colocarInfo(json,data: Utilities.traerImagen(urlImagen: ""));
+                        self.colocarInfo(json,data: Utilities.traerImagen(urlImagen: ""), principal: principal, personales: personales,cuentas: cuentas);
                     }catch{
                         print(error);
                     }
@@ -249,25 +278,23 @@ class InfoUserController: UIViewController {
             }
         }.resume();
         
-        
     }
     
     
     //Coloca la información del usuario en los TextFields
-    private func colocarInfo(_ json:[String:Any?],data: UIImage!){
+    private func colocarInfo(_ json:[String:Any?],data: UIImage!, principal:DatosPrincipalesCellController, personales:DatosPersonalesCellController, cuentas: CuentasAsociadasCellController){
         OperationQueue.main.addOperation {
-            self.txFlEmailUser.text = json["email"] as? String;
-            self.txFlNameUser.text = json["name"] as? String;
-            self.txFlPApellidoUser.text = json["apellidoPaterno"] as? String;
-            self.txFlSApellidoUser.text = json["apellidoMaterno"] as? String;
-            self.txFlEstadoUser.text = json["estado"] as? String;
-            self.txFlTelUser.text = json["tel"] as? String;
-            self.txFlFacebookUser.text = json["facebook"] as? String;
-            self.txFlGoogleUser.text = json["google"] as? String;
-            self.txFlFechaNacUser.text = json["fecha_nacimiento"] as? String;
-            self.txFlDirUser.text = json["direccion"] as? String;
-            self.txFlRFCUser.text = json["rfc"] as? String;
-            self.imgUser.image = data;
+            principal.txFlNomUsuario.text = json["email"] as? String;
+            personales.txFlNombre.text = json["name"] as? String;
+            personales.txFlPApellido.text = json["apellidoPaterno"] as? String;
+            personales.txFlSApellido.text = json["apellidoMaterno"] as? String;
+            principal.txFlResidencia.text = json["estado"] as? String;
+            personales.txFlTelefono.text = json["tel"] as? String;
+            cuentas.txFlFacebook.text = json["facebook"] as? String;
+            cuentas.txFlGmail.text = json["google"] as? String;
+            personales.tcFlNacimiento.text = json["fecha_nacimiento"] as? String;
+            personales.txFlDireccion.text = json["direccion"] as? String;
+            personales.txFlRFC.text = json["rfc"] as? String;
         }
     }
     
@@ -306,9 +333,6 @@ class InfoUserController: UIViewController {
     }
     
     @objc func EnableEdit(){
-        btGuardar.isHidden = false;
-        fltBtn.isHidden = true;
-        disable_EnableAllSub(principal: scVwDatosUser);
         
         let alert = UIAlertController(title: "Aviso", message: "Ahora puede editar su perfil", preferredStyle: UIAlertControllerStyle.alert);
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))

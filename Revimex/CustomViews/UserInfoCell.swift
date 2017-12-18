@@ -7,25 +7,56 @@
 //
 
 import UIKit
+class UserInfoCellContent: InfoCells{
+    
+    
+    var idTipo: String! = UserInfoCell.KEY;
+    public var imgUser:UIImage!;
+    public var imgBackground:UIImage!;
+    var controller: UITableViewCell!;
+    
+    init() {
+        
+    }
+    
+    init(imgUser: UIImage!,imgBackground:UIImage!) {
+        self.imgUser = imgUser;
+        self.imgBackground = imgBackground;
+    }
+    
+    func setController(controller: UITableViewCell!) {
+        self.controller = controller as! UserInfoCell;
+    }
+    
+}
 
 class UserInfoCell: UITableViewCell {
-
-    public static let KEY = "CELL_USER";
-    @IBOutlet weak var contenedor: UIView!
-    @IBOutlet weak var imgUser: UIImageView!
+    public static var KEY = "CELL_USER";
+    public var idString:String!;
     
+    @IBOutlet weak var contenedor: UIView!
+    @IBOutlet weak var imgBackground: UIImageView!
+    @IBOutlet weak var imgUser: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         imgUser.contentMode = .scaleAspectFit;
-        imgUser.image = UIImage.fontAwesomeIcon(name: .userO, textColor: UIColor.black, size: CGSize(width: 100, height: 100));
-        // Initialization code
+        imgUser.backgroundColor = UIColor.white;
+        imgUser.clipsToBounds = true
+        imgUser.layer.cornerRadius = imgUser.frame.size.width/2;
+        imgUser.layer.borderWidth = 1.5;
+        imgUser.layer.borderColor = UIColor.black.cgColor;
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    public func set(datos:UserInfoCellContent!){
+        imgBackground.image = datos.imgUser;
+        imgBackground.image = datos.imgBackground;
     }
     
 }

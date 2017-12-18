@@ -12,11 +12,12 @@ import UIKit
 class InputCellText: UITableViewCell {
     
     public static let KEY = "CELL_TEXT";
+    
     @IBOutlet weak var labelNombreCampo: UILabel!
     @IBOutlet weak var txFlCampo: UITextField!
     @IBOutlet weak var contenedor: UIView!
     
-    
+    public var idString:String?;
     
     override func awakeFromNib() {
         super.awakeFromNib()

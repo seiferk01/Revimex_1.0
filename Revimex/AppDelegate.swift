@@ -142,6 +142,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     switch (json["status"] as! Int) {
                         case 1:
                             if let userId = (json["user_id"] as? Int){
+
+                                
                                 UserDefaults.standard.set(usuario, forKey: "usuario")
                                 UserDefaults.standard.set(contraseña, forKey: "contraseña")
                                 UserDefaults.standard.set(userId, forKey: "userId")

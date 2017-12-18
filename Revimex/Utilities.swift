@@ -32,7 +32,6 @@ extension UIViewController
     }
 }
 
-
 extension UIView {
     
     // Example use: myView.addBorder(toSide: .Left, withColor: UIColor.redColor().CGColor, andThickness: 1.0)
@@ -86,6 +85,11 @@ extension UIColor {
     }
 }
 
+protocol InfoCells{
+    var idTipo:String!{get set};
+    var controller:UITableViewCell!{get};
+    func setController(controller: UITableViewCell!);
+}
 
 var azul = UIColor(hexString: "#48B1F3ff")
 var azulClaro = UIColor(hexString: "#F0F5F6ff")
@@ -183,5 +187,49 @@ class Utilities: NSObject {
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         return alert;
     }
+    
+    //Genera una imagen con blur a partir de un UIImage
+    public static func blur(img:UIImage!,blurVal:Double)->UIImage{
+        let context = CIContext(options: nil);
+        let cFilter = CIFilter(name: "CIGaussianBlur");
+        let nwImg = CIImage(image: img);
+        cFilter?.setValue(nwImg, forKey: kCIInputImageKey);
+        cFilter?.setValue(blurVal, forKey: kCIInputRadiusKey);
+        
+        let output:CIImage! = cFilter?.outputImage;
+        let ciImg = context.createCGImage(output, from: output.extent);
+        let fnlImg = UIImage(cgImage: ciImg!);
+        return fnlImg;
+    }
+    
+    //Reescala una imagen
+    public static func escalar(img:UIImage!,nwAncho:CGSize,sizeOriginal: CGRect)->UIImage{
+        let widthFactor = img.size.width / nwAncho.width ;
+        let heightFactor = img.size.height / nwAncho.height;
+        
+        var resizeFactor = widthFactor*0.04;
+        if img.size.height > img.size.width {
+            resizeFactor = heightFactor*0.04;
+        }
+        
+        let newSize = CGSize(width: img.size.width/resizeFactor, height: img.size.height/resizeFactor);
+        
+        UIGraphicsBeginImageContext(newSize);
+        
+        img.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height));
+        let imgOut = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        //let fImg = CIImage(image: imgOut!);
+        //return recortarImg(img: fImg, vector: sizeOriginal);
+        return imgOut!;
+    }
+    
+    //Recorta una Imgen
+    public static func recortarImg(img:CIImage!,vector:CGRect!)->UIImage!{
+        let imgRef = img.cropped(to: vector);
+        return UIImage(ciImage: imgRef);
+    }
+    
     
 }

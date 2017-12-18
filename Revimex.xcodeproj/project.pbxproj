@@ -30,6 +30,13 @@
 		11DFB5101FE31B520054EB0B /* InputCellText.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DFB50E1FE31B520054EB0B /* InputCellText.xib */; };
 		11DFB5131FE321250054EB0B /* UserInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DFB5111FE321250054EB0B /* UserInfoCell.swift */; };
 		11DFB5141FE321250054EB0B /* UserInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DFB5121FE321250054EB0B /* UserInfoCell.xib */; };
+		11DFB5171FE3405A0054EB0B /* Usuario.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DFB5161FE3405A0054EB0B /* Usuario.swift */; };
+		11DFB5191FE351490054EB0B /* FormView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11DFB5181FE351490054EB0B /* FormView.xib */; };
+		11DFB51B1FE351630054EB0B /* FormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DFB51A1FE351630054EB0B /* FormView.swift */; };
+		11E474641FE8421D00947087 /* DatosPrincipalesCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E474631FE8421D00947087 /* DatosPrincipalesCellController.swift */; };
+		11E474661FE8431900947087 /* DatosPersonalesCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E474651FE8431900947087 /* DatosPersonalesCellController.swift */; };
+		11E474681FE843BC00947087 /* CuentasAsociadasCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E474671FE843BC00947087 /* CuentasAsociadasCellController.swift */; };
+		11E4746A1FE8442D00947087 /* RowButtonsCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E474691FE8442D00947087 /* RowButtonsCellController.swift */; };
 		3261DDDE92CC7379B15839F6 /* Pods_Revimex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7157B05E32A444E4251D9884 /* Pods_Revimex.framework */; };
 		48B9B14F0C637A1897AF24BE /* Pods_RevimexUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4804135DFD212E74478102 /* Pods_RevimexUITests.framework */; };
 		521E56131FC5F9F900D38947 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 521E561A1FC5F9F900D38947 /* Bolts.framework */; };
@@ -172,6 +179,13 @@
 		11DFB50E1FE31B520054EB0B /* InputCellText.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputCellText.xib; sourceTree = "<group>"; };
 		11DFB5111FE321250054EB0B /* UserInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoCell.swift; sourceTree = "<group>"; };
 		11DFB5121FE321250054EB0B /* UserInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserInfoCell.xib; sourceTree = "<group>"; };
+		11DFB5161FE3405A0054EB0B /* Usuario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usuario.swift; sourceTree = "<group>"; };
+		11DFB5181FE351490054EB0B /* FormView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FormView.xib; sourceTree = "<group>"; };
+		11DFB51A1FE351630054EB0B /* FormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormView.swift; sourceTree = "<group>"; };
+		11E474631FE8421D00947087 /* DatosPrincipalesCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatosPrincipalesCellController.swift; sourceTree = "<group>"; };
+		11E474651FE8431900947087 /* DatosPersonalesCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatosPersonalesCellController.swift; sourceTree = "<group>"; };
+		11E474671FE843BC00947087 /* CuentasAsociadasCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuentasAsociadasCellController.swift; sourceTree = "<group>"; };
+		11E474691FE8442D00947087 /* RowButtonsCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowButtonsCellController.swift; sourceTree = "<group>"; };
 		38C718A7EB59A146890BB452 /* Pods-Revimex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Revimex.release.xcconfig"; path = "Pods/Target Support Files/Pods-Revimex/Pods-Revimex.release.xcconfig"; sourceTree = "<group>"; };
 		4A7853774D5C0684B9B300A4 /* Pods-RevimexTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RevimexTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RevimexTests/Pods-RevimexTests.release.xcconfig"; sourceTree = "<group>"; };
 		521E561A1FC5F9F900D38947 /* Bolts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bolts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -332,6 +346,8 @@
 				11DFB50E1FE31B520054EB0B /* InputCellText.xib */,
 				11DFB5111FE321250054EB0B /* UserInfoCell.swift */,
 				11DFB5121FE321250054EB0B /* UserInfoCell.xib */,
+				11DFB51A1FE351630054EB0B /* FormView.swift */,
+				11DFB5181FE351490054EB0B /* FormView.xib */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -350,6 +366,14 @@
 				11DFB5071FE303820054EB0B /* FormContainerController.swift */,
 			);
 			path = ReusableControllers;
+			sourceTree = "<group>";
+		};
+		11DFB5151FE340350054EB0B /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				11DFB5161FE3405A0054EB0B /* Usuario.swift */,
+			);
+			path = Objects;
 			sourceTree = "<group>";
 		};
 		3BD06E1923E8E542D8206FF3 /* Pods */ = {
@@ -461,8 +485,8 @@
 				52B7201E1FA785F500F447DA /* RevimexTests */,
 				52B720291FA785F500F447DA /* RevimexUITests */,
 				52B720081FA785F500F447DA /* Products */,
-				526DC6221FB52CAC007CD85F /* Frameworks */,
 				3BD06E1923E8E542D8206FF3 /* Pods */,
+				526DC6221FB52CAC007CD85F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -479,6 +503,7 @@
 		52B720091FA785F500F447DA /* Revimex */ = {
 			isa = PBXGroup;
 			children = (
+				11DFB5151FE340350054EB0B /* Objects */,
 				11DFB5061FE303350054EB0B /* ReusableControllers */,
 				11350F191FE2DDB100DC87EA /* CustomViews */,
 				11788F261FE06DE50070F7CF /* Interfaces */,
@@ -510,6 +535,10 @@
 				1148A61A1FDF493000D57758 /* FotosInmuebleController.swift */,
 				11788F231FDF4DCA0070F7CF /* FotosInmuebleCellController.swift */,
 				11DFB5041FE2FFA90054EB0B /* LineasNegociosController.swift */,
+				11E474631FE8421D00947087 /* DatosPrincipalesCellController.swift */,
+				11E474651FE8431900947087 /* DatosPersonalesCellController.swift */,
+				11E474671FE843BC00947087 /* CuentasAsociadasCellController.swift */,
+				11E474691FE8442D00947087 /* RowButtonsCellController.swift */,
 			);
 			path = Revimex;
 			sourceTree = "<group>";
@@ -681,6 +710,7 @@
 				11965E961FDB08AE009681F2 /* clienteFinal.jpg in Resources */,
 				526DC5F21FB21D9F007CD85F /* centroComercial.png in Resources */,
 				529C2CE51FDB823B007E8427 /* backStock.jpg in Resources */,
+				11DFB5191FE351490054EB0B /* FormView.xib in Resources */,
 				117DC6C01FD738460009F6AB /* pencil.png in Resources */,
 				526DC5F01FB21D9F007CD85F /* Tiendas.png in Resources */,
 				526DC61F1FB4F43F007CD85F /* buscar.png in Resources */,
@@ -917,17 +947,23 @@
 				52A116DB1FA7B962002F6B59 /* DescriptionViewController.swift in Sources */,
 				5221BDFD1FBA83FE00D0F89C /* Utilities.swift in Sources */,
 				529858B11FDF3B3900685F5D /* InfoController.swift in Sources */,
+				11DFB5171FE3405A0054EB0B /* Usuario.swift in Sources */,
 				11965E9E1FDB0ECE009681F2 /* DetallesInmuebleController.swift in Sources */,
 				11DFB5131FE321250054EB0B /* UserInfoCell.swift in Sources */,
 				11788F241FDF4DCA0070F7CF /* FotosInmuebleCellController.swift in Sources */,
 				5221BE1B1FBF77D000D0F89C /* FavoritesController.swift in Sources */,
 				11788F281FE06E1D0070F7CF /* FormValidate.swift in Sources */,
+				11E474641FE8421D00947087 /* DatosPrincipalesCellController.swift in Sources */,
 				52B734F51FDB31280028F2F7 /* UbicacionInmuebleController.swift in Sources */,
 				52B7200B1FA785F500F447DA /* AppDelegate.swift in Sources */,
 				1148A61B1FDF493000D57758 /* FotosInmuebleController.swift in Sources */,
 				11C266351FD768D00051AC05 /* PropiedadesController.swift in Sources */,
+				11DFB51B1FE351630054EB0B /* FormView.swift in Sources */,
 				52A4C02C1FACD411003CAF69 /* Details.swift in Sources */,
+				11E4746A1FE8442D00947087 /* RowButtonsCellController.swift in Sources */,
 				11C2663B1FD89D6C0051AC05 /* SubirPropiedadViewController.swift in Sources */,
+				11E474681FE843BC00947087 /* CuentasAsociadasCellController.swift in Sources */,
+				11E474661FE8431900947087 /* DatosPersonalesCellController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
