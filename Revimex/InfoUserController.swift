@@ -328,7 +328,6 @@ class InfoUserController: UIViewController,UITableViewDataSource,UITableViewDele
         UserDefaults.standard.removeObject(forKey: "contraseña");
         UserDefaults.standard.removeObject(forKey: "userId");
         navBarStyleCase = 0;
-        navigationController?.navigationBar.isHidden = true;
         performSegue(withIdentifier: "infoToLogin", sender: nil)
     }
     

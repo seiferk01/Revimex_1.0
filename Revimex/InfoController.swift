@@ -13,6 +13,28 @@ class InfoController: UIViewController {
     @IBOutlet weak var descripcion: UITextView!
     @IBOutlet weak var contenedorCarousel: UIScrollView!
     @IBOutlet weak var favoritosBtn: UIButton!
+    @IBOutlet weak var carritoBtn: UIButton!
+    
+    @IBOutlet weak var estado: UILabel!
+    @IBOutlet weak var municipio: UILabel!
+    @IBOutlet weak var tipo: UILabel!
+    @IBOutlet weak var precio: UILabel!
+    @IBOutlet weak var metros: UILabel!
+    @IBOutlet weak var terreno: UILabel!
+    @IBOutlet weak var constuccion: UILabel!
+    @IBOutlet weak var habitaciones: UILabel!
+    @IBOutlet weak var baños: UILabel!
+    @IBOutlet weak var direccion: UILabel!
+    @IBOutlet weak var botonesContainer: UIView!
+    @IBOutlet weak var headerInfoContainer: UIView!
+    @IBOutlet weak var habitacionesImage: UIImageView!
+    @IBOutlet weak var bañosImage: UIImageView!
+    
+    var agregarCarrito = true
+    var idCarrito = -1
+    
+    var activityIndicator = UIActivityIndicatorView()
+    var background = UIView()
     
     //variable para el carousel
     var vistaCarouselGrande = UIView()
@@ -21,10 +43,29 @@ class InfoController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        habitacionesImage.image = UIImage(named: "habitaciones.png")
+        bañosImage.image = UIImage(named: "baños.png")
+        estado.font = UIFont.boldSystemFont(ofSize: 17.0)
+        municipio.font = UIFont.boldSystemFont(ofSize: 17.0)
+        precio.font = UIFont.boldSystemFont(ofSize: 17.0)
+        terreno.font = UIFont.boldSystemFont(ofSize: 16.0)
+        constuccion.font = UIFont.boldSystemFont(ofSize: 16.0)
+        baños.font = UIFont.boldSystemFont(ofSize: 17.0)
+        habitaciones.font = UIFont.boldSystemFont(ofSize: 17.0)
+        
+        botonesContainer.backgroundColor = UIColor(white: 1, alpha: 0.1)
+        headerInfoContainer.backgroundColor = UIColor(white: 1, alpha: 0.1)
+        view?.backgroundColor = UIColor(white: 1, alpha: 0)
+        
         favoritosBtn.setBackgroundImage(UIImage(named: "favorites.png") as UIImage?, for: .normal)
+        carritoBtn.setBackgroundImage(UIImage(named: "carritoDisponible.png") as UIImage?, for: .normal)
         
         //verificar favoritos
         self.revisarFavoritos()
+        
+        //verificar carritos
+        self.revisarCarritos()
         
         //request a detalles
         requestDetails()
@@ -37,6 +78,13 @@ class InfoController: UIViewController {
     
     //llamado a los detalles de la propiedad seleccionada
     func requestDetails() {
+        
+        //indicador de loading
+        activityIndicator = UIActivityIndicatorView()
+        background = Utilities.activityIndicatorBackground(activityIndicator: activityIndicator)
+        background.center = self.view.center
+        view.addSubview(background)
+        activityIndicator.startAnimating()
         
         let urlRequestDetails = "http://18.221.106.92/api/public/propiedades/detalle"
         
@@ -71,21 +119,21 @@ class InfoController: UIViewController {
                         if  let id = propiedadSeleccionada["Id"] as? String { propiedad.Id = id }
                         if  let calle = propiedadSeleccionada["calle"] as? String { propiedad.calle = calle }
                         if  let colonia = propiedadSeleccionada["colonia"] as? String { propiedad.colonia = colonia }
-                        if  let construccion = propiedadSeleccionada["construccion"] as? String { propiedad.construccion = "Metros de construccion: " + construccion + "\n"}
+                        if  let construccion = propiedadSeleccionada["construccion"] as? String { propiedad.construccion = construccion + "m2"}
                         if  let cp = propiedadSeleccionada["cp"] as? String { propiedad.cp = "C.P. " + cp }
-                        if  let estacionamiento = propiedadSeleccionada["estacionamiento"] as? String { propiedad.estacionamiento = "Estacionamientos: " + estacionamiento + "\n"}
+                        if  let estacionamiento = propiedadSeleccionada["estacionamiento"] as? String { propiedad.estacionamiento = estacionamiento}
                         if  let estado = propiedadSeleccionada["estado"] as? String { propiedad.estado = estado }
-                        if  let habitaciones = propiedadSeleccionada["habitaciones"] as? String { propiedad.habitaciones = "Habitaciones: " + habitaciones + "\n"}
+                        if  let habitaciones = propiedadSeleccionada["habitaciones"] as? String { propiedad.habitaciones = habitaciones}
                         if  let idp = propiedadSeleccionada["idp"] as? String { propiedad.idp = idp }
-                        if  let lat = propiedadSeleccionada["lat"] as? String { propiedad.lat = lat }
-                        if  let lon = propiedadSeleccionada["lon"] as? String { propiedad.lon = lon }
+                        if  let lat = propiedadSeleccionada["lat"] as? String,lat != "" { propiedad.lat = lat }
+                        if  let lon = propiedadSeleccionada["lon"] as? String,lon != "" { propiedad.lon = lon }
                         if  let municipio = propiedadSeleccionada["municipio"] as? String { propiedad.municipio = municipio }
-                        if  let niveles = propiedadSeleccionada["niveles"] as? String { propiedad.niveles = "Niveles: " + niveles + "\n"}
+                        if  let niveles = propiedadSeleccionada["niveles"] as? String { propiedad.niveles = niveles + " niveles"}
                         if  let origen_propiedad = propiedadSeleccionada["origen_propiedad"] as? String { propiedad.origen_propiedad = origen_propiedad }
-                        if  let patios = propiedadSeleccionada["patios"] as? String { propiedad.patios = "Patios: " + patios + "\n"}
-                        if  let precio = propiedadSeleccionada["precio"] as? String { propiedad.precio = "Precio: $" + precio + "\n"}
-                        if  let terreno = propiedadSeleccionada["terreno"] as? String { propiedad.terreno = "Metros de terreno: " + terreno + "\n"}
-                        if  let tipo = propiedadSeleccionada["tipo"] as? String { propiedad.tipo = "Tipo de inmuble: " + tipo + "\n"}
+                        if  let patios = propiedadSeleccionada["patios"] as? String { propiedad.patios = patios}
+                        if  let precio = propiedadSeleccionada["precio"] as? String { propiedad.precio = "$" + precio}
+                        if  let terreno = propiedadSeleccionada["terreno"] as? String { propiedad.terreno = terreno + "m2"}
+                        if  let tipo = propiedadSeleccionada["tipo"] as? String { propiedad.tipo = tipo}
                         if  let descripcion = propiedadSeleccionada["descripcion"] as? String { propiedad.descripcion = descripcion }
                         if  let pros = propiedadSeleccionada["pros"] as? String { propiedad.pros = pros }
                         if  let wcs = propiedadSeleccionada["wcs"] as? String { propiedad.wcs = wcs }
@@ -152,20 +200,27 @@ class InfoController: UIViewController {
             descripcion.text = "Descripcion no disponible"
         }
         
-        descripcion.text = descripcion.text + "\n\nUBICACION\n"+propiedad.calle+" "+" "+propiedad.colonia+", "+propiedad.municipio+" "+propiedad.estado+" "+propiedad.cp+"."
-        
-        descripcion.text = descripcion.text + "\n\nINFORMACION\n"+propiedad.tipo+propiedad.habitaciones+propiedad.estacionamiento+propiedad.niveles+propiedad.patios+propiedad.terreno+propiedad.construccion+propiedad.precio
+        estado.text = propiedad.estado
+        municipio.text = propiedad.municipio
+        tipo.text = propiedad.tipo
+        precio.text = propiedad.precio
+        metros.text = "Terreno/Const."
+        terreno.text = propiedad.terreno
+        constuccion.text = propiedad.construccion
+        habitaciones.text = propiedad.habitaciones + " Habitaciones"
+        baños.text = propiedad.wcs + " Baños"
+        direccion.text = propiedad.calle + " " + propiedad.colonia + " " + propiedad.cp
         
         descripcion.isEditable = false
         
         //muestra las fotos
         showPhotos()
         
+        
     }
     
     //muestra las fotos
     func showPhotos() {
-        
         let ancho = contenedorCarousel.bounds.width
         let largo = contenedorCarousel.bounds.height
         
@@ -176,6 +231,7 @@ class InfoController: UIViewController {
         contenedorCarousel.contentSize = CGSize(width: ancho * CGFloat(propiedad.fotos.count), height: largo)
         contenedorCarousel.isPagingEnabled = true
         contenedorCarousel.showsHorizontalScrollIndicator = false
+        
         
         for (index, url) in propiedad.fotos.enumerated() {
             
@@ -188,7 +244,8 @@ class InfoController: UIViewController {
             
         }
         
-        
+        activityIndicator.stopAnimating()
+        background.removeFromSuperview()
     }
     
     
@@ -230,6 +287,7 @@ class InfoController: UIViewController {
         vistaCarouselGrande.addSubview(contenedorCarouselGrande)
         
         view.addSubview(vistaCarouselGrande)
+        
     }
     
     //oculta el carousel grande
@@ -296,7 +354,7 @@ class InfoController: UIViewController {
                 }.resume()
         }
         else{
-            navBarStyleCase = 2
+            navBarStyleCase = 1
             performSegue(withIdentifier: "descriptionToLogin", sender: nil)
         }
         
@@ -358,13 +416,11 @@ class InfoController: UIViewController {
                     }
                     
                     OperationQueue.main.addOperation({
+                        self.favoritosBtn.setBackgroundImage(UIImage(named: "favorites.png") as UIImage?, for: .normal)
                         for favorito in favoritos{
                             if String(favorito) == idOfertaSeleccionada{
                                 self.favoritosBtn.setBackgroundImage(UIImage(named: "favoritoSeleccionado.png") as UIImage?, for: .normal)
                                 break
-                            }
-                            else{
-                                self.favoritosBtn.setBackgroundImage(UIImage(named: "favorites.png") as UIImage?, for: .normal)
                             }
                         }
                     })
@@ -375,13 +431,194 @@ class InfoController: UIViewController {
         
     }
     
+    //***************************funciones carritos**********************************
+    @IBAction func metodoCarrito(_ sender: Any) {
+        
+        if let userId = UserDefaults.standard.object(forKey: "userId") as? Int{
+            if agregarCarrito {
+                agregarAlCarrito(userId: userId)
+            }
+            else{
+                removerDeCarrito()
+            }
+        }
+        else{
+            navBarStyleCase = 1
+            performSegue(withIdentifier: "descriptionToLogin", sender: nil)
+        }
+    }
+    
+    
+    
+    func agregarAlCarrito(userId: Int) {
+        
+        let urlRequestCarritos = "http://18.221.106.92/api/public/cart"
+        
+        guard let url = URL(string: urlRequestCarritos) else { return }
+        
+        var request = URLRequest (url: url)
+        request.httpMethod = "POST"
+        
+        let parameters: [String:Any] = [
+            "user_id" : userId,
+            "propiedad_id" : idOfertaSeleccionada
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        print(userId)
+        print(idOfertaSeleccionada)
+        
+        let session  = URLSession.shared
+        
+        session.dataTask(with: request) { (data, response, error) in
+            
+            if let response = response {
+                print(response)
+            }
+            
+            if let data = data {
+                
+                do {
+                    let json = try JSONSerialization.jsonObject (with: data) as! [String:Any?]
+                    
+                    print(json)
+                    
+                } catch {
+                    print("El error es: ")
+                    print(error)
+                }
+                
+                OperationQueue.main.addOperation({
+                    cambioCarritos = true
+                    self.revisarCarritos()
+                })
+                
+            }
+            }.resume()
+    }
+    
+    
+    
+    func removerDeCarrito() {
+        let urlRequestCarritos = "http://18.221.106.92/api/public/cart/" + String(idCarrito)
+        
+        guard let url = URL(string: urlRequestCarritos) else { return }
+        
+        var request = URLRequest (url: url)
+        request.httpMethod = "DELETE"
+    
+        print(idOfertaSeleccionada)
+        
+        let session  = URLSession.shared
+        
+        session.dataTask(with: request) { (data, response, error) in
+            
+            if let response = response {
+                print(response)
+            }
+            
+            if let data = data {
+                
+                do {
+                    let json = try JSONSerialization.jsonObject (with: data) as! [String:Any?]
+                    
+                    print(json)
+                    
+                } catch {
+                    print("El error es: ")
+                    print(error)
+                }
+                
+                OperationQueue.main.addOperation({
+                    cambioCarritos = true
+                    self.revisarCarritos()
+                })
+                
+            }
+            }.resume()
+    }
+    
+    
+    
+    func revisarCarritos(){
+        
+        if let userId = UserDefaults.standard.object(forKey: "userId") as? Int{
+            
+            var carritos: [Int] = []
+            
+            let urlCarritos =  "http://18.221.106.92/api/public/cart/" + String(userId)
+            
+            guard let url = URL(string: urlCarritos) else { return }
+            
+            let session  = URLSession.shared
+            
+            session.dataTask(with: url) { (data, response, error) in
+                
+                if let response = response {
+                    print(response)
+                }
+                
+                if let data = data {
+                    
+                    do {
+                        let json = try JSONSerialization.jsonObject (with: data) as! NSDictionary
+                        
+                        if let dat = json["data"] as? NSArray {
+                            
+                            for element in dat {
+                                if let carrito = element as? NSDictionary{
+                                    if let idPropiedad = carrito["propiedad_id"] as? Int{
+                                        carritos.append(idPropiedad)
+                                    }
+                                    if let idCart = carrito["id"] as? Int{
+                                        self.idCarrito = idCart
+                                    }
+                                }
+                            }
+                            
+                        }
+                        
+                    } catch {
+                        print("El error es: ")
+                        print(error)
+                    }
+                    
+                    OperationQueue.main.addOperation({
+                        
+                        self.carritoBtn.setBackgroundImage(UIImage(named: "carritoDisponible.png") as UIImage?, for: .normal)
+                        self.agregarCarrito = true
+                        
+                        for carrito in carritos{
+                            if String(carrito) == idOfertaSeleccionada{
+                                self.carritoBtn.setBackgroundImage(UIImage(named: "carritoSeleccionado.png") as UIImage?, for: .normal)
+                                self.agregarCarrito = false
+                                break
+                            }
+                        }
+                    })
+                    
+                }
+            }.resume()
+        }
+        
+    }
+    
+    
+    
     @IBAction func compartir(_ sender: Any) {
         
         if let userId = UserDefaults.standard.object(forKey: "userId") as? Int{
             
         }
         else{
-            navBarStyleCase = 2
+            navBarStyleCase = 1
             performSegue(withIdentifier: "descriptionToLogin", sender: nil)
         }
         
