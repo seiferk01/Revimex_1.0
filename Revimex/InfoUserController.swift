@@ -26,6 +26,11 @@ class InfoUserController: UIViewController,UITableViewDataSource,UITableViewDele
     public var nomUsu:String!;
     public var estado:String!;
     public var nombre:String!;
+    public var pApellido:String!;
+    public var sApellido:String!;
+    public var telefono:String!;
+    public var rfc:String!;
+    public var direccion:String!;
     
     override func viewDidLoad() {
         super.viewDidLoad()

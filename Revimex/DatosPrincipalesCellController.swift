@@ -66,7 +66,6 @@ class DatosPrincipalesCellController: UITableViewCell,TextFieldDelegate {
     }
     
     func dis_enable(){
-        txFlNombreUsuario.isEnabled = !txFlNombreUsuario.isEnabled;
         txFlNombreUsuario.colorEnable();
         txFlResidencia.isEnabled = !txFlResidencia.isEnabled;
         txFlResidencia.colorEnable();
@@ -74,7 +73,6 @@ class DatosPrincipalesCellController: UITableViewCell,TextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if(textField.tag == 1){
-            print(textField.text);
             infoUserController.nomUsu = textField.text
         }else{
             infoUserController.estado = textField.text;
