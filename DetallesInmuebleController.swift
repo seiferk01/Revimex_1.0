@@ -172,10 +172,10 @@ class DetallesInmuebleController: FormViewController,FormValidate{
         rows![estacionamiento.tag!] = self.estacionamiento.value!;
         rows![antiguedad.tag!] = self.antiguedad.value!;
         rows![descripcion.tag!] = self.descripcion.value!;
-        rows![serviciosBasicos.tag!] = self.serviciosBasicos.value!;
-        rows![areas.tag!] = self.areas.value;
-        rows![detalles.tag!] = self.detalles.value;
-        rows![entorno.tag!] = self.entorno.value;
+        rows![serviciosBasicos.tag!] = Array(self.serviciosBasicos.value!);
+        rows![areas.tag!] = Array(self.areas.value!);
+        rows![detalles.tag!] = Array(self.detalles.value!);
+        rows![entorno.tag!] = Array(self.entorno.value!);
         return self.rows;
     }
 

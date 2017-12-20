@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Material
 
 class RowButtonsCellContent:InfoCells{
     var idTipo: String! = RowButtonsCellController.KEY;
@@ -25,11 +26,25 @@ class RowButtonsCellController: UITableViewCell {
     
     public static let KEY: String! = "ROW_BUTTONS";
     
-    @IBOutlet weak var btnEditar: UIButton!
-    @IBOutlet weak var btnGuardar: UIButton!
+    public var infoUserController:InfoUserController!;
+    @IBOutlet var btnEditar: FABButton!
+    @IBOutlet var btnGuardar: RaisedButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        btnEditar.image = Icon.edit;
+        btnEditar.tintColor = UIColor.black;
+        btnEditar.pulseColor = .white;
+        btnEditar.backgroundColor = Color.lightBlue.base;
+        btnEditar.addTarget(self, action: #selector(editar), for: .touchUpInside);
+        
+        btnGuardar.title = "Guardar";
+        btnGuardar.titleColor = Color.black;
+        btnGuardar.backgroundColor = Color.lightBlue.base;
+        btnGuardar.pulseColor = .white;
+        btnGuardar.addTarget(self, action: #selector(guardarInfo), for: .touchUpInside);
+        btnGuardar.isHidden = true;
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -41,10 +56,17 @@ class RowButtonsCellController: UITableViewCell {
         btnEditar.setBackgroundImage(datos.imgBtnEd, for: .application);
     }
     
-    @IBAction func editarCampos(_ sender: UIButton) {
+    @objc func editar(){
+        infoUserController.EnableEdit();
+        btnGuardar.isHidden = false;
+        btnEditar.isHidden = true;
     }
     
-    @IBAction func guardarInfo(_ sender: UIButton) {
+    @objc func guardarInfo() {
+        infoUserController.actionGuardar();
+        btnEditar.isHidden = false;
+        btnGuardar.isHidden = true;
+        infoUserController.disable_EnableAllSub();
     }
     
 }

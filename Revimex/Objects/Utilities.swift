@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Material
 
 /*USERDEAFULTS
     usuario -> almacena el email del usuario
@@ -92,10 +92,24 @@ extension UIViewController
     }
 }
 
-<<<<<<< HEAD:Revimex/Utilities.swift
-=======
-//para generar bordes
->>>>>>> ae76faa30fcdd7b3a21107d715bcc6a6028e8606:Revimex/Objects/Utilities.swift
+extension TextField{
+    func colorEnable(){
+        if(isEnabled == false){
+            placeholderNormalColor = Color.lightGray;
+            placeholderActiveColor = Color.lightGray;
+            dividerActiveColor = Color.lightGray;
+            dividerNormalColor = Color.lightGray;
+            textColor = Color.lightGray;
+        }else{
+            placeholderNormalColor = Color.blue.base;
+            placeholderActiveColor = Color.blue.base;
+            dividerActiveColor = Color.blue.base;
+            dividerNormalColor = Color.blue.base;
+            textColor = Color.black;
+        }
+    }
+}
+
 extension UIView {
     
     // Example use: myView.addBorder(toSide: .Bottom, withColor: UIColor.red.cgColor, andThickness: 1.0)
@@ -260,7 +274,6 @@ class Utilities: NSObject {
         return alert;
     }
     
-<<<<<<< HEAD:Revimex/Utilities.swift
     //Genera una imagen con blur a partir de un UIImage
     public static func blur(img:UIImage!,blurVal:Double)->UIImage{
         let context = CIContext(options: nil);
@@ -303,8 +316,5 @@ class Utilities: NSObject {
         let imgRef = img.cropped(to: vector);
         return UIImage(ciImage: imgRef);
     }
-    
-=======
->>>>>>> ae76faa30fcdd7b3a21107d715bcc6a6028e8606:Revimex/Objects/Utilities.swift
     
 }

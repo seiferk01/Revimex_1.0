@@ -9,7 +9,6 @@
 import UIKit
 class UserInfoCellContent: InfoCells{
     
-    
     var idTipo: String! = UserInfoCell.KEY;
     public var imgUser:UIImage!;
     public var imgBackground:UIImage!;

@@ -217,11 +217,20 @@ class SubirPropiedadViewController: UIViewController{
             let rowsFotos = (fotosInmueble)?.obtValores()!;
             let rowTotal = [
                 "detallesInmueble" : rowsDetalles!,
-                "ubicacionInmueble" : rowsUbicacion!,
-                "fotosInmueble" : rowsFotos!
+                "ubicacionInmueble" : rowsUbicacion!
             ];
             print(rowTotal);
+            do{
+                let data = try JSONSerialization.data(withJSONObject: rowTotal , options: .prettyPrinted);
+                /*let dataString = String(data: data, encoding: .utf8);
+                print(dataString);*/
+            }catch{
+                print(error);
+            }
         };
+        
+       
+        
     }
     
 }

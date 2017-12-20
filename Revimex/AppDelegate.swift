@@ -14,7 +14,6 @@ import FBSDKLoginKit
 import FBSDKShareKit
 import IQKeyboardManagerSwift
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
